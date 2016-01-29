@@ -13,6 +13,8 @@
     "scripts": ["background.js"]
   },
   
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  
   "content_scripts": [{
     "matches": ["<all_urls>"],
     "js": ["content.js"]
@@ -22,6 +24,7 @@
     "default_icon": "icon.png",
     "default_title": "WalkME Test"
   },
+  
   "manifest_version": 2
 }
 
