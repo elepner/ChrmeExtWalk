@@ -3,7 +3,11 @@
   "description": "WalkME Test",
   "version": "0.7",
   "permissions": [
-    "activeTab"
+    "tabs",
+    "activeTab",
+    "https://*/*",
+    "http://*/*",
+    "file:///*/*"
   ],
   "background": {
     "scripts": ["background.js"]

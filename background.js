@@ -2,14 +2,19 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-function doStuffWithDom(domContent) {
-    console.log('I received the following DOM content:\n' + domContent);
+function htmlReturned(domContent) {
+    var el = document.createElement('html');
+    el.innerHTML = domContent;
+    var script = el.getElementsByTagName('script');
+    
 }
+
+
 
 chrome.browserAction.onClicked.addListener(function (tab) {
 
 
-    chrome.tabs.sendMessage(tab.id, { text: 'report_back' }, doStuffWithDom);
+    chrome.tabs.sendMessage(tab.id, { text: 'report_back' }, htmlReturned);
 
     //chrome.windows.create({ url: "headers.html?", type: "popup", width: 800, height: 600 });
 });
