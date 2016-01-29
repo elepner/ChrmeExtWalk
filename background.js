@@ -2,19 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.debugger.attach({tabId:tab.id}, version,
-      onAttach.bind(null, tab.id));
+function doStuffWithDom(domContent) {
+    console.log('I received the following DOM content:\n' + domContent);
+}
+
+chrome.browserAction.onClicked.addListener(function (tab) {
+
+
+    chrome.tabs.sendMessage(tab.id, { text: 'report_back' }, doStuffWithDom);
+
+    //chrome.windows.create({ url: "headers.html?", type: "popup", width: 800, height: 600 });
 });
 
 var version = "1.0";
 
-function onAttach(tabId) {
-  if (chrome.runtime.lastError) {
-    alert(chrome.runtime.lastError.message);
-    return;
-  }
-
-  chrome.windows.create(
-      {url: "headers.html?" + tabId, type: "popup", width: 800, height: 600});
-}
