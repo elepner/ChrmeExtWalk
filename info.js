@@ -1,7 +1,6 @@
 
 var tabId = parseInt(window.location.search.substring(1));
-var WALK_ME_URL = "cdn.walkme.com"
-var WALK_ME_REGEXP = /(?:^|\/)walkme_(.*?)_https.js$/g;
+
 var SETTINGS_PATTERN = "https://s3.amazonaws.com/s3.maketutorial.com/users/"
 
 function parseResponseConfigurationObjectText(resoponse) {
@@ -28,13 +27,13 @@ function htmlReturned(domContent, resultParsedCallback) {
         var scriptElement = scripts[i];
         var parser = document.createElement('a');
         parser.href = scriptElement.src;
-        var match = WALK_ME_REGEXP.exec(parser.href);
+        var match = /(?:^|\/)walkme_(.*?)_http(s?).js$/g.exec(parser.href);
         if (match) {
             walkmeObject = {};
             var urlParams = parser.pathname.split('/');
             walkmeObject.userId = match[1];
             walkmeObject.production = !(parser.pathname.indexOf('test') > -1);
-            walkmeObject.protocol = parser.protocol;
+            walkmeObject.protocol = 'http' + match[2];
             walkmeObject.host = parser.hostname;
             walkmeObject.async = !!scriptElement.getAttribute('async');
             break;
