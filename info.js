@@ -1,7 +1,7 @@
 
 var tabId = parseInt(window.location.search.substring(1));
 var WALK_ME_URL = "cdn.walkme.com"
-
+var WALK_ME_REGEXP = /(?:^|\/)walkme_(.*?)_https.js$/g;
 var SETTINGS_PATTERN = "https://s3.amazonaws.com/s3.maketutorial.com/users/"
 
 function parseResponseConfigurationObjectText(resoponse) {
@@ -28,11 +28,11 @@ function htmlReturned(domContent, resultParsedCallback) {
         var scriptElement = scripts[i];
         var parser = document.createElement('a');
         parser.href = scriptElement.src;
-
-        if (parser.hostname && parser.hostname.indexOf(WALK_ME_URL) > -1) {
+        var match = WALK_ME_REGEXP.exec(parser.href);
+        if (match) {
             walkmeObject = {};
             var urlParams = parser.pathname.split('/');
-            walkmeObject.userId = urlParams[2];
+            walkmeObject.userId = match[1];
             walkmeObject.production = !(parser.pathname.indexOf('test') > -1);
             walkmeObject.protocol = parser.protocol;
             walkmeObject.host = parser.hostname;
@@ -112,6 +112,7 @@ function loadData() {
             var dataFiles = walkMeObject.additionalInfo.dataFiles;
             for (var i = 0; i < dataFiles.length; i++) {
                 var langs = "";
+                if(dataFiles[i].languages.length === 0) langs = "Languages info is missing."
                 for (var j = 0; j < dataFiles[i].languages.length; j++) {
                     langs += dataFiles[i].languages[j].displayName;
                     if (j != dataFiles[i].languages.length - 1) {
